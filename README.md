@@ -1,16 +1,43 @@
-# React + Vite
+# mgrs-gpx
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A browser-based tool for converting [MGRS](https://en.wikipedia.org/wiki/Military_grid_reference_system) coordinates into GPX waypoint files.
 
-Currently, two official plugins are available:
+Paste a list of MGRS coordinates, label them, and export a `.gpx` file ready to load into any GPS device or mapping app.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Parse one or more MGRS coordinates (one per line), with whitespace tolerance
+- Auto-label waypoints with a configurable prefix + sequential number (e.g. `WP01`, `WP02`), or set custom labels per waypoint
+- Save waypoint sets to the browser (localStorage) for later use
+- Export directly to a `.gpx` file — uses the Web Share API on mobile, falls back to a download link on desktop
+- Select and merge waypoints across multiple saved sets into a single GPX export
+- Dark / light theme
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Usage
 
-## Expanding the ESLint configuration
+1. Open the app in a browser.
+2. Paste MGRS coordinates into the **Input** tab (one per line).
+3. Click **Parse**. Valid entries show their labels; invalid entries are flagged with an error.
+4. Optionally set a label prefix and/or custom labels per waypoint.
+5. Click **Export GPX** to download the file, or **Save** to store the set for later.
+6. Switch to the **Saved sets** tab to manage saved sets and export waypoints across multiple sets at once.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Stack
+
+- [React](https://react.dev) + [Vite](https://vitejs.dev)
+- [mgrs](https://www.npmjs.com/package/mgrs) — MGRS ↔ lat/lon conversion
+- [Tailwind CSS](https://tailwindcss.com)
+- TypeScript
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
