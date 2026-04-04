@@ -17,14 +17,14 @@ export default function SaveBar({ prefix, setPrefix, setName, onSetName, onSave,
           value={setName}
           onChange={e => onSetName(e.target.value)}
           placeholder={defaultSetName()}
-          className="flex-1 min-w-0 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 min-w-0 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 px-3 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <input
           value={prefix}
           onChange={e => setPrefix(e.target.value.toUpperCase().slice(0, 5))}
           placeholder="WPT"
           maxLength={5}
-          className="w-20 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 px-2 py-2.5 text-sm font-mono text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-20 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 px-2 py-2.5 text-base font-mono text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
       <div className="flex gap-2">

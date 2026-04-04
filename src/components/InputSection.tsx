@@ -19,7 +19,7 @@ export default function InputSection({ raw, setRaw, onParse, onClear, validCount
         onChange={e => setRaw(e.target.value)}
         placeholder={'33UXP1234567890\n33UXP9876543210'}
         rows={6}
-        className="w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 p-3 text-sm font-mono resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 p-3 text-base font-mono resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <div className="flex gap-2 mt-2">
         <button
