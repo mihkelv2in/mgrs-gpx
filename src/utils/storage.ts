@@ -5,7 +5,13 @@ const KEY = 'mgrs-gpx-sets'
 export function loadSets(): MarkerSet[] {
   try {
     const raw = localStorage.getItem(KEY)
-    return raw ? (JSON.parse(raw) as MarkerSet[]) : []
+    if (!raw) return []
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const parsed = JSON.parse(raw) as any[]
+    return parsed.map(s => ({
+      ...s,
+      markers: s.markers ?? s.waypoints ?? [],
+    }))
   } catch {
     return []
   }
