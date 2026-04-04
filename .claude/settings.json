@@ -1,5 +1,9 @@
 {
   "permissions": {
+    "allow": [
+      "Bash(xargs wc:*)",
+      "Bash(grep -n \"spread\\\\|{.*\\\\.\\\\.\\\\.\" src/**/*.ts src/**/*.tsx)"
+    ],
     "additionalDirectories": [
       "c:\\Users\\mihke\\mgrs-gpx\\src\\components"
     ]
