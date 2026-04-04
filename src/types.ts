@@ -14,7 +14,7 @@ export interface InvalidParsedEntry {
 
 export type ParsedEntry = ValidParsedEntry | InvalidParsedEntry
 
-export interface Waypoint {
+export interface Marker {
   id: string
   label: string
   mgrs: string
@@ -22,10 +22,10 @@ export interface Waypoint {
   lon: number
 }
 
-export interface WaypointSet {
+export interface MarkerSet {
   id: string
   name: string
   prefix: string
   createdAt: string
-  waypoints: Waypoint[]
+  markers: Marker[]
 }

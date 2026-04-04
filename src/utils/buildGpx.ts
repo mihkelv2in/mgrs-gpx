@@ -1,4 +1,4 @@
-import type { Waypoint } from '../types'
+import type { Marker } from '../types'
 
 function xmlEsc(s: string): string {
   return String(s)
@@ -9,9 +9,9 @@ function xmlEsc(s: string): string {
     .replace(/'/g, '&apos;')
 }
 
-export function buildGpx(waypoints: Waypoint[], name = 'waypoints'): string {
+export function buildGpx(markers: Marker[], name = 'markers'): string {
   const now = new Date().toISOString()
-  const wpts = waypoints.map(w =>
+  const wpts = markers.map(w =>
     `  <wpt lat="${w.lat.toFixed(8)}" lon="${w.lon.toFixed(8)}">
     <name>${xmlEsc(w.label)}</name>
     <desc>${xmlEsc(w.mgrs)}</desc>

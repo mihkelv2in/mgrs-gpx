@@ -1,26 +1,26 @@
 import { useState, useRef, useEffect } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
-import WaypointRow from './WaypointRow'
+import MarkerRow from './MarkerRow'
 import ConfirmModal from './ConfirmModal'
-import type { WaypointSet } from '../types'
+import type { MarkerSet } from '../types'
 
 type TriState = 'none' | 'all' | 'some'
 
 interface SetItemProps {
-  set: WaypointSet
+  set: MarkerSet
   selected: Set<string>
   setSelected: Dispatch<SetStateAction<Set<string>>>
   onDeleteSet: (id: string) => void
-  onDeleteWaypoint: (setId: string, waypointId: string) => void
+  onDeleteMarker: (setId: string, markerId: string) => void
 }
 
-export default function SetItem({ set, selected, setSelected, onDeleteSet, onDeleteWaypoint }: SetItemProps) {
+export default function SetItem({ set, selected, setSelected, onDeleteSet, onDeleteMarker }: SetItemProps) {
   const [expanded, setExpanded] = useState(false)
   const [confirmDeleteSet, setConfirmDeleteSet] = useState(false)
-  const [confirmDeleteWaypoint, setConfirmDeleteWaypoint] = useState<string | null>(null)
+  const [confirmDeleteMarker, setConfirmDeleteMarker] = useState<string | null>(null)
   const cbRef = useRef<HTMLInputElement>(null)
 
-  const ids = set.waypoints.map(w => w.id)
+  const ids = set.markers.map(w => w.id)
   const selCount = ids.filter(id => selected.has(id)).length
   const triState: TriState = selCount === 0 ? 'none' : selCount === ids.length ? 'all' : 'some'
 
@@ -67,7 +67,7 @@ export default function SetItem({ set, selected, setSelected, onDeleteSet, onDel
             {set.name}
           </div>
           <div className="text-xs text-zinc-500 dark:text-zinc-400">
-            {set.waypoints.length} waypoint{set.waypoints.length !== 1 ? 's' : ''} · {dateStr}
+            {set.markers.length} marker{set.markers.length !== 1 ? 's' : ''} · {dateStr}
           </div>
         </div>
         <button
@@ -86,19 +86,19 @@ export default function SetItem({ set, selected, setSelected, onDeleteSet, onDel
         </button>
       </div>
 
-      {expanded && set.waypoints.map(w => (
-        <WaypointRow
+      {expanded && set.markers.map(w => (
+        <MarkerRow
           key={w.id}
-          waypoint={w}
+          marker={w}
           checked={selected.has(w.id)}
           onToggle={() => toggleOne(w.id)}
-          onDelete={() => setConfirmDeleteWaypoint(w.id)}
+          onDelete={() => setConfirmDeleteMarker(w.id)}
         />
       ))}
 
-      {expanded && set.waypoints.length === 0 && (
+      {expanded && set.markers.length === 0 && (
         <div className="pl-10 pr-4 py-3 text-xs text-zinc-400 dark:text-zinc-500 border-t border-zinc-100 dark:border-zinc-700">
-          No waypoints remaining
+          No markers remaining
         </div>
       )}
 
@@ -110,11 +110,11 @@ export default function SetItem({ set, selected, setSelected, onDeleteSet, onDel
         />
       )}
 
-      {confirmDeleteWaypoint && (
+      {confirmDeleteMarker && (
         <ConfirmModal
-          message="Delete this waypoint? This cannot be undone."
-          onConfirm={() => { onDeleteWaypoint(set.id, confirmDeleteWaypoint); setConfirmDeleteWaypoint(null) }}
-          onCancel={() => setConfirmDeleteWaypoint(null)}
+          message="Delete this marker? This cannot be undone."
+          onConfirm={() => { onDeleteMarker(set.id, confirmDeleteMarker); setConfirmDeleteMarker(null) }}
+          onCancel={() => setConfirmDeleteMarker(null)}
         />
       )}
     </div>

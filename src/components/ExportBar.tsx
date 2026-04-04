@@ -1,9 +1,9 @@
 import { buildGpx } from '../utils/buildGpx'
-import type { WaypointSet } from '../types'
+import type { MarkerSet } from '../types'
 
 interface ExportBarProps {
   selected: Set<string>
-  sets: WaypointSet[]
+  sets: MarkerSet[]
   onClear: () => void
 }
 
@@ -11,16 +11,16 @@ export default function ExportBar({ selected, sets, onClear }: ExportBarProps) {
   if (selected.size === 0) return null
 
   async function handleExport() {
-    const waypoints = sets
-      .flatMap(s => s.waypoints)
+    const markers = sets
+      .flatMap(s => s.markers)
       .filter(w => selected.has(w.id))
 
-    const gpxStr = buildGpx(waypoints, 'waypoints')
-    const file = new File([gpxStr], 'waypoints.gpx', { type: 'application/gpx+xml' })
+    const gpxStr = buildGpx(markers, 'markers')
+    const file = new File([gpxStr], 'markers.gpx', { type: 'application/gpx+xml' })
 
     try {
       if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: 'waypoints.gpx' })
+        await navigator.share({ files: [file], title: 'markers.gpx' })
         return
       }
     } catch (e) {
@@ -31,7 +31,7 @@ export default function ExportBar({ selected, sets, onClear }: ExportBarProps) {
     const url = URL.createObjectURL(file)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'waypoints.gpx'
+    a.download = 'markers.gpx'
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -48,7 +48,7 @@ export default function ExportBar({ selected, sets, onClear }: ExportBarProps) {
         ✕ clear
       </button>
       <span className="text-sm text-white flex-1">
-        {selected.size} waypoint{selected.size !== 1 ? 's' : ''} selected
+        {selected.size} marker{selected.size !== 1 ? 's' : ''} selected
       </span>
       <button
         onClick={handleExport}

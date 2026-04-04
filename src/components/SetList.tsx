@@ -1,16 +1,16 @@
 import type { Dispatch, SetStateAction } from 'react'
 import SetItem from './SetItem'
-import type { WaypointSet } from '../types'
+import type { MarkerSet } from '../types'
 
 interface SetListProps {
-  sets: WaypointSet[]
+  sets: MarkerSet[]
   selected: Set<string>
   setSelected: Dispatch<SetStateAction<Set<string>>>
   onDeleteSet: (id: string) => void
-  onDeleteWaypoint: (setId: string, waypointId: string) => void
+  onDeleteMarker: (setId: string, markerId: string) => void
 }
 
-export default function SetList({ sets, selected, setSelected, onDeleteSet, onDeleteWaypoint }: SetListProps) {
+export default function SetList({ sets, selected, setSelected, onDeleteSet, onDeleteMarker }: SetListProps) {
   if (!sets.length) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-zinc-400 dark:text-zinc-500">
@@ -29,7 +29,7 @@ export default function SetList({ sets, selected, setSelected, onDeleteSet, onDe
           selected={selected}
           setSelected={setSelected}
           onDeleteSet={onDeleteSet}
-          onDeleteWaypoint={onDeleteWaypoint}
+          onDeleteMarker={onDeleteMarker}
         />
       ))}
     </div>

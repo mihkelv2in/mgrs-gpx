@@ -15,7 +15,7 @@ import type { ParsedEntry } from './types'
 
 export default function App() {
   const { dark, toggle } = useTheme()
-  const { sets, addSet, deleteSet, deleteWaypoint } = useSets()
+  const { sets, addSet, deleteSet, deleteMarker } = useSets()
 
   const [tab, setTab] = useState<'input' | 'sets'>('input')
   const [raw, setRaw] = useState('')
@@ -54,12 +54,12 @@ export default function App() {
     const p = prefix.toUpperCase().slice(0, 5)
     const name = setName.trim() || defaultSetName()
     let validIdx = 0
-    const waypoints = parsed.flatMap((entry, i) => {
+    const markers = parsed.flatMap((entry, i) => {
       if (!entry.valid) return []
       const autoLabel = buildLabel(p, ++validIdx)
       return [{ id: crypto.randomUUID(), label: customLabels[i] ?? autoLabel, mgrs: entry.mgrs, lat: entry.lat, lon: entry.lon }]
     })
-    const gpxStr = buildGpx(waypoints, name)
+    const gpxStr = buildGpx(markers, name)
     const file = new File([gpxStr], `${name}.gpx`, { type: 'application/gpx+xml' })
     try {
       if (navigator.canShare?.({ files: [file] })) {
@@ -82,7 +82,7 @@ export default function App() {
     if (!validParsed.length) return
     const p = prefix.toUpperCase().slice(0, 5)
     let validIdx = 0
-    const waypoints = parsed.flatMap((entry, i) => {
+    const markers = parsed.flatMap((entry, i) => {
       if (!entry.valid) return []
       const autoLabel = buildLabel(p, ++validIdx)
       return [{ id: crypto.randomUUID(), label: customLabels[i] ?? autoLabel, mgrs: entry.mgrs, lat: entry.lat, lon: entry.lon }]
@@ -92,7 +92,7 @@ export default function App() {
       name: setName.trim() || defaultSetName(),
       prefix: p,
       createdAt: new Date().toISOString(),
-      waypoints,
+      markers,
     })
     setParsed([])
     setRaw('')
@@ -161,7 +161,7 @@ export default function App() {
               selected={selected}
               setSelected={setSelected}
               onDeleteSet={deleteSet}
-              onDeleteWaypoint={deleteWaypoint}
+              onDeleteMarker={deleteMarker}
             />
           )}
         </div>

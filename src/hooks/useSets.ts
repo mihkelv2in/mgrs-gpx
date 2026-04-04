@@ -1,23 +1,23 @@
 import { useState } from 'react'
 import { loadSets, saveSets } from '../utils/storage'
-import type { WaypointSet } from '../types'
+import type { MarkerSet } from '../types'
 
 interface UseSetsReturn {
-  sets: WaypointSet[]
-  addSet: (set: WaypointSet) => void
+  sets: MarkerSet[]
+  addSet: (set: MarkerSet) => void
   deleteSet: (id: string) => void
-  deleteWaypoint: (setId: string, waypointId: string) => void
+  deleteMarker: (setId: string, markerId: string) => void
 }
 
 export function useSets(): UseSetsReturn {
-  const [sets, setSets] = useState<WaypointSet[]>(() => loadSets())
+  const [sets, setSets] = useState<MarkerSet[]>(() => loadSets())
 
-  function persist(next: WaypointSet[]) {
+  function persist(next: MarkerSet[]) {
     setSets(next)
     saveSets(next)
   }
 
-  function addSet(set: WaypointSet) {
+  function addSet(set: MarkerSet) {
     persist([set, ...sets])
   }
 
@@ -25,15 +25,15 @@ export function useSets(): UseSetsReturn {
     persist(sets.filter(s => s.id !== id))
   }
 
-  function deleteWaypoint(setId: string, waypointId: string) {
+  function deleteMarker(setId: string, markerId: string) {
     persist(sets.map(s => {
       if (s.id !== setId) return s
-      const waypoints = s.waypoints
-        .filter(w => w.id !== waypointId)
+      const markers = s.markers
+        .filter(w => w.id !== markerId)
         .map((w, i) => ({ ...w, label: `${s.prefix}${String(i + 1).padStart(3, '0')}` }))
-      return { ...s, waypoints }
+      return { ...s, markers }
     }))
   }
 
-  return { sets, addSet, deleteSet, deleteWaypoint }
+  return { sets, addSet, deleteSet, deleteMarker }
 }
