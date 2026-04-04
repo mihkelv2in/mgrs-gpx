@@ -1,4 +1,4 @@
-import { buildLabel } from '../utils/formatters'
+import { buildLabel, formatMgrs } from '../utils/formatters'
 import type { ParsedEntry } from '../types'
 
 interface RowProps {
@@ -20,7 +20,7 @@ function Row({ item, label, parsedIdx, onLabelChange }: RowProps) {
             className="text-sm font-mono font-medium w-24 flex-shrink-0 bg-transparent border-b border-transparent hover:border-zinc-300 dark:hover:border-zinc-600 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none text-zinc-900 dark:text-zinc-100"
           />
           <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400 truncate">
-            {item.mgrs}
+            {formatMgrs(item.mgrs)}
           </span>
         </>
       ) : (

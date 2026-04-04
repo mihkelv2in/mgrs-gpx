@@ -1,3 +1,4 @@
+import { formatMgrs } from '../utils/formatters'
 import type { Waypoint } from '../types'
 
 interface WaypointRowProps {
@@ -20,7 +21,7 @@ export default function WaypointRow({ waypoint, checked, onToggle, onDelete }: W
         {waypoint.label}
       </span>
       <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400 flex-1 truncate">
-        {waypoint.mgrs}
+        {formatMgrs(waypoint.mgrs)}
       </span>
       <button
         onClick={onDelete}

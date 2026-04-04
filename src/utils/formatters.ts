@@ -1,3 +1,12 @@
+export function formatMgrs(mgrs: string): string {
+  const match = mgrs.match(/^(\d{1,2}[A-Z])([A-Z]{2})(\d*)$/)
+  if (!match) return mgrs
+  const [, gzd, square, digits] = match
+  if (!digits.length) return `${gzd} ${square}`
+  const half = digits.length / 2
+  return `${gzd} ${square} ${digits.slice(0, half)} ${digits.slice(half)}`
+}
+
 export function buildLabel(prefix: string, index: number): string {
   return `${prefix.toUpperCase().slice(0, 5)}${String(index).padStart(3, '0')}`
 }
