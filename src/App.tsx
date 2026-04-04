@@ -5,6 +5,7 @@ import { parseLines } from './utils/parseMgrs'
 import { buildLabel, defaultSetName } from './utils/formatters'
 import { buildGpx } from './utils/buildGpx'
 import TopBar from './components/TopBar'
+import InstallHelpModal from './components/InstallHelpModal'
 import InputSection from './components/InputSection'
 import ParsedResults from './components/ParsedResults'
 import SaveBar from './components/SaveBar'
@@ -24,6 +25,7 @@ export default function App() {
   const [setName, setSetName] = useState('')
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [savedMsg, setSavedMsg] = useState(false)
+  const [showHelp, setShowHelp] = useState(false)
 
   const validParsed = parsed.filter(p => p.valid)
   const invalidCount = parsed.filter(p => !p.valid).length
@@ -103,7 +105,8 @@ export default function App() {
   return (
     <div className={`min-h-screen bg-zinc-100 dark:bg-zinc-900 flex flex-col`}>
       <div className="max-w-lg mx-auto w-full flex flex-col min-h-screen">
-        <TopBar dark={dark} onToggle={toggle} />
+        <TopBar dark={dark} onToggle={toggle} onHelp={() => setShowHelp(true)} />
+        {showHelp && <InstallHelpModal onClose={() => setShowHelp(false)} />}
 
         <div className="flex border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
           {(['input', 'sets'] as const).map(t => (
