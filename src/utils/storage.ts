@@ -2,11 +2,12 @@ import type { Marker, MarkerSet } from '../types'
 
 type StoredMarkerSet = Omit<MarkerSet, 'markers'> & { markers?: Marker[]; waypoints?: Marker[] }
 
-const KEY = 'mgrs-gpx-sets'
+const KEY = 'mgrs-exporter-sets'
+const LEGACY_KEY = 'mgrs-gpx-sets'
 
 export function loadSets(): MarkerSet[] {
   try {
-    const raw = localStorage.getItem(KEY)
+    const raw = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY)
     if (!raw) return []
     const parsed = JSON.parse(raw) as StoredMarkerSet[]
     return parsed.map(({ id, name, prefix, createdAt, markers, waypoints }) => ({

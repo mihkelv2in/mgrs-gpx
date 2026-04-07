@@ -13,9 +13,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'MGRS to GPX Converter',
-        short_name: 'MGRS→GPX',
-        description: 'Convert MGRS coordinates to GPX waypoints',
+        name: 'MGRS Exporter',
+        short_name: 'MGRS Exporter',
+        description: 'Convert MGRS coordinates to GPX or KML waypoints',
         theme_color: '#18181b',
         background_color: '#18181b',
         display: 'standalone',

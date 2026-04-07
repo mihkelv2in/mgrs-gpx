@@ -1,4 +1,4 @@
-# mgrs-gpx
+# MGRS Exporter
 
 A browser-based tool for converting [MGRS](https://en.wikipedia.org/wiki/Military_grid_reference_system) coordinates into GPX or KML waypoint files.
 
