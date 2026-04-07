@@ -14,6 +14,8 @@ export interface InvalidParsedEntry {
 
 export type ParsedEntry = ValidParsedEntry | InvalidParsedEntry
 
+export type ExportFormat = 'gpx' | 'kml'
+
 export interface Marker {
   id: string
   label: string

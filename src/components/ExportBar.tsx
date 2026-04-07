@@ -1,13 +1,15 @@
-import { buildGpx } from '../utils/buildGpx'
-import type { MarkerSet } from '../types'
+import { exportMarkers } from '../utils/exportMarkers'
+import type { ExportFormat, MarkerSet } from '../types'
 
 interface ExportBarProps {
   selected: Set<string>
   sets: MarkerSet[]
+  format: ExportFormat
+  setFormat: (value: ExportFormat) => void
   onClear: () => void
 }
 
-export default function ExportBar({ selected, sets, onClear }: ExportBarProps) {
+export default function ExportBar({ selected, sets, format, setFormat, onClear }: ExportBarProps) {
   if (selected.size === 0) return null
 
   async function handleExport() {
@@ -15,25 +17,7 @@ export default function ExportBar({ selected, sets, onClear }: ExportBarProps) {
       .flatMap(s => s.markers)
       .filter(w => selected.has(w.id))
 
-    const gpxStr = buildGpx(markers, 'markers')
-    const file = new File([gpxStr], 'markers.gpx', { type: 'application/gpx+xml' })
-
-    try {
-      if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: 'markers.gpx' })
-        return
-      }
-    } catch (e) {
-      if (e instanceof Error && e.name !== 'AbortError') console.error(e)
-      else return
-    }
-
-    const url = URL.createObjectURL(file)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'markers.gpx'
-    a.click()
-    URL.revokeObjectURL(url)
+    await exportMarkers(markers, 'markers', format)
   }
 
   return (
@@ -50,11 +34,20 @@ export default function ExportBar({ selected, sets, onClear }: ExportBarProps) {
       <span className="text-sm text-white flex-1">
         {selected.size} marker{selected.size !== 1 ? 's' : ''} selected
       </span>
+      <select
+        aria-label="Export format"
+        value={format}
+        onChange={e => setFormat(e.target.value as ExportFormat)}
+        className="rounded-lg border border-blue-300 bg-white/95 text-blue-700 text-sm px-2 py-2 focus:outline-none focus:ring-2 focus:ring-white"
+      >
+        <option value="gpx">GPX</option>
+        <option value="kml">KML</option>
+      </select>
       <button
         onClick={handleExport}
         className="bg-white text-blue-600 text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-50 flex-shrink-0"
       >
-        Export GPX
+        Export {format.toUpperCase()}
       </button>
     </div>
   )

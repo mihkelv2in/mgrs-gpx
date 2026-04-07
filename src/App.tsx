@@ -3,7 +3,7 @@ import { useTheme } from './hooks/useTheme'
 import { useSets } from './hooks/useSets'
 import { parseLines } from './utils/parseMgrs'
 import { buildLabel, defaultSetName } from './utils/formatters'
-import { buildGpx } from './utils/buildGpx'
+import { exportMarkers } from './utils/exportMarkers'
 import TopBar from './components/TopBar'
 import InstallHelpModal from './components/InstallHelpModal'
 import InputSection from './components/InputSection'
@@ -11,7 +11,7 @@ import ParsedResults from './components/ParsedResults'
 import SaveBar from './components/SaveBar'
 import SetList from './components/SetList'
 import ExportBar from './components/ExportBar'
-import type { ParsedEntry } from './types'
+import type { ExportFormat, ParsedEntry } from './types'
 
 export default function App() {
   const { dark, toggle } = useTheme()
@@ -23,6 +23,7 @@ export default function App() {
   const [customLabels, setCustomLabels] = useState<Record<number, string>>({})
   const [prefix, setPrefix] = useState('')
   const [setName, setSetName] = useState('')
+  const [format, setFormat] = useState<ExportFormat>('gpx')
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [savedMsg, setSavedMsg] = useState(false)
   const [showHelp, setShowHelp] = useState(false)
@@ -59,23 +60,8 @@ export default function App() {
       const autoLabel = buildLabel(p, ++validIdx)
       return [{ id: crypto.randomUUID(), label: customLabels[i] ?? autoLabel, mgrs: entry.mgrs, lat: entry.lat, lon: entry.lon }]
     })
-    const gpxStr = buildGpx(markers, name)
-    const file = new File([gpxStr], `${name}.gpx`, { type: 'application/gpx+xml' })
-    try {
-      if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: `${name}.gpx` })
-        return
-      }
-    } catch (e) {
-      if (e instanceof Error && e.name !== 'AbortError') console.error(e)
-      else return
-    }
-    const url = URL.createObjectURL(file)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${name}.gpx`
-    a.click()
-    URL.revokeObjectURL(url)
+
+    await exportMarkers(markers, name, format)
   }
 
   function handleSave() {
@@ -143,6 +129,8 @@ export default function App() {
                   setPrefix={setPrefix}
                   setName={setName}
                   onSetName={setSetName}
+                  format={format}
+                  setFormat={setFormat}
                   onSave={handleSave}
                   onExport={handleExport}
                 />
@@ -170,6 +158,8 @@ export default function App() {
           <ExportBar
             selected={selected}
             sets={sets}
+            format={format}
+            setFormat={setFormat}
             onClear={() => setSelected(new Set())}
           />
         </div>

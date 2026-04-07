@@ -39,6 +39,31 @@ test.describe('Exporting GPX', () => {
     expect(content).toContain('<wpt ')
   })
 
+  test('Choosing KML exports a .kml file with placemarks', async ({ freshPage: page }) => {
+    // Given valid coordinates are parsed and KML is selected
+    await parseCoords(page, [VALID_MGRS])
+    await page.getByPlaceholder(/Import/).fill('KML Route')
+    await page.getByLabel('Export format').selectOption('kml')
+
+    // When the user exports
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      page.getByRole('button', { name: 'Export' }).click(),
+    ])
+
+    // Then a .kml file is downloaded with KML markup
+    expect(download.suggestedFilename()).toMatch(/\.kml$/)
+
+    const stream = await download.createReadStream()
+    const chunks: Buffer[] = []
+    for await (const chunk of stream) chunks.push(Buffer.from(chunk))
+    const content = Buffer.concat(chunks).toString()
+
+    expect(content).toContain('<kml ')
+    expect(content).toContain('<Placemark>')
+    expect(content).toContain('<name>KML Route</name>')
+  })
+
   test('Selecting markers from a saved set shows the ExportBar', async ({ freshPage: page }) => {
     // Given a set has been saved
     await saveSet(page, [VALID_MGRS], 'Hotel Set', 'H')
